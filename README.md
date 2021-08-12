@@ -53,8 +53,8 @@ In directories, in the following order:
 - `./terraform/prod/webserver-cluster`
 - `./terraform/prod/database`
 - `./terraform/prod/vpc`
-- `./terraform/prod/secrets`
 - `./terraform/prod/iam`
+- `./terraform/prod/secrets`
 
 2. Deregister created AMI
 3. Delete EBS Snapshots
