@@ -97,16 +97,22 @@ resource "aws_security_group" "private" {
   }
 }
 
+data "template_file" "user_data" {
+  template = file("${path.module}/user-data.sh")
+
+  vars = {
+    server_port   = var.server_port
+    db_secert_arn = data.terraform_remote_state.secrets.outputs.db_secert_arn
+    db_endpoint   = data.terraform_remote_state.database.outputs.endpoint
+  }
+}
+
 resource "aws_launch_configuration" "server" {
   image_id             = data.aws_ami.node_app.id
   instance_type        = "t2.micro"
   iam_instance_profile = data.terraform_remote_state.iam.outputs.ec2_instance_profile_name
   security_groups      = [aws_security_group.private.id]
-
-  user_data = <<-EOF
-              #!/bin/bash
-              su ubuntu -c 'export PORT=${var.server_port}; export SECRET_ID=${data.terraform_remote_state.secrets.outputs.db_secert_arn}; export DB_ENDPOINT=${data.terraform_remote_state.database.outputs.endpoint}; nohup /home/ubuntu/.nvm/versions/node/v16.3.0/bin/node /home/ubuntu/app/index.js &'
-              EOF
+  user_data            = data.template_file.user_data.rendered
 
   lifecycle {
     # reference used in ASG launch confuguraiton will be updated after creating a new resource and destroying this one

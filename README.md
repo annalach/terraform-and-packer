@@ -14,6 +14,7 @@ The example provisions resources in AWS Cloud. I am not responsible for any char
 1. In `packer` directory create an AMI image using the command:
 
 ```
+$ packer init ami.pkr.hcl
 $ packer build ami.pkr.hcl
 ```
 
