@@ -74,7 +74,7 @@ resource "aws_db_parameter_group" "rds" {
 resource "aws_db_instance" "rds" {
   identifier             = "${var.environment_name}-rds"
   instance_class         = "db.t3.micro"
-  allocated_storage      = 5
+  allocated_storage      = var.allocated_storage
   engine                 = "postgres"
   engine_version         = "13.1"
   name                   = jsondecode(data.aws_secretsmanager_secret_version.db_secret.secret_string).name

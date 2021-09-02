@@ -13,6 +13,11 @@ variable "vpc_state_path" {
   type        = string
 }
 
+variable "allocated_storage" {
+  description = "The allocated storege"
+  type = number
+}
+
 variable "multi_az" {
   description = "Boolean flag to indicate if RDS instance should be Multi-AZ"
   type        = bool
